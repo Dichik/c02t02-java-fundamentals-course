@@ -1,4 +1,4 @@
-package kpi.model;
+package kpi.model.entities;
 
 public class Flat {
 

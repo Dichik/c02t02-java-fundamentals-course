@@ -1,38 +1,38 @@
 package kpi.view;
 
-import kpi.model.Flat;
+import kpi.model.entities.Flat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 public class InputUtility {
 
-	private final CalculateView view;
+	// rewrite it
+
 	private final Scanner scanner;
 	private final Integer TOTAL_NUMBER_OF_FLATS = 10;
 
-	public InputUtility(CalculateView view) {
-		this.view = view;
+	public InputUtility() {
 		scanner = new Scanner(System.in);
 	}
 
-	public Flat[] inputValues() {
-		view.printMessage(CalculateView.INPUT_DATA);
-		int userChoice = scanner.nextInt();
-		if (userChoice == CalculateView.ENTER_VALUES_OPTION) {
-			return enterValues();
-		} else if (userChoice == CalculateView.GENERATE_VALUES_OPTION) {
-			return generateValues();
-		} else if (userChoice == CalculateView.EXIT_OPTION) {
-			return null;
-		} else {
-			view.printMessage(CalculateView.INCORRECT_INPUT_FORMAT);
-			return new Flat[0];
-		}
-	}
+//	public List<Flat> inputValues() {
+//		int userChoice = scanner.nextInt();
+//		if (userChoice == CalculateView.ENTER_VALUES_OPTION) {
+//			return enterValues();
+//		} else if (userChoice == CalculateView.GENERATE_VALUES_OPTION) {
+//			return generateValues();
+//		} else if (userChoice == CalculateView.EXIT_OPTION) {
+//			return null;
+//		} else {
+//			return new ArrayList<>();
+//		}
+//	}
 
-	private Flat[] enterValues() {
-		Flat[] flats = new Flat[TOTAL_NUMBER_OF_FLATS];
+	private List<Flat> enterValues() {
+		List<Flat> flats = new ArrayList<>();
 		System.out.print(CalculateView.INPUT_FIELDS_FOR_FLAT);
 		for (int i = 0; i < TOTAL_NUMBER_OF_FLATS; ++i) {
 			Flat flat = new Flat();
@@ -51,7 +51,7 @@ public class InputUtility {
 				.setType(type)
 				.setServiceLife(serviceLife);
 
-			flats[i] = flat;
+			flats.add(flat);
 			System.out.println(CalculateView.SUCCESS_MESSAGE);
 		}
 
@@ -59,8 +59,8 @@ public class InputUtility {
 		return flats;
 	}
 
-	public Flat[] generateValues() {
-		Flat[] flats = new Flat[TOTAL_NUMBER_OF_FLATS];
+	public List<Flat> generateValues() {
+		List<Flat> flats = new ArrayList<>();
 		Random random = new Random();
 		for (int i = 0; i < TOTAL_NUMBER_OF_FLATS; ++i) {
 			Flat flat = new Flat(
@@ -71,7 +71,7 @@ public class InputUtility {
 				"type" + random.nextInt(5),
 				random.nextInt(5)
 			);
-			flats[i] = flat;
+			flats.add(flat);
 		}
 
 		System.out.println("[Values was generated successfully]");
