@@ -6,6 +6,7 @@ import kpi.model.exceptions.InvalidUserInputException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import javax.xml.stream.events.Characters;
 import java.io.File;
 import java.util.List;
 import java.util.Scanner;
@@ -15,8 +16,6 @@ public class CalculateView {
 	public static final Scanner scanner = new Scanner(System.in);
 	public static final Logger logger = LogManager.getLogger(CalculateView.class);
 
-	public static final String INCORRECT_INPUT_FORMAT = "Sorry, you entered wrong value," +
-		" please try again\n";
 	public static final String RESOURCES_PREFIX = "src/main/resources/";
 
 	public static final String INPUT_FIELDS_FOR_FLAT =
@@ -42,7 +41,7 @@ public class CalculateView {
 		System.out.println("Please enter Yes / No in case you want to continue...");
 		String userInput = scanner.nextLine();
 		if (isUserInputValid(userInput)) {
-			return userInput.equals("yes");
+			return userInput.equalsIgnoreCase("yes");
 		} else throw new InvalidUserInputException();
 	}
 
@@ -52,8 +51,8 @@ public class CalculateView {
 	}
 
 	private boolean isUserInputValid(String input) {
-		input = input.toLowerCase();
-		return input.equals("yes") || input.equals("no");
+		return input.equalsIgnoreCase("yes")
+					|| input.equalsIgnoreCase("no");
 	}
 
 	public UsersChoice getUsersChoice() {
@@ -87,8 +86,25 @@ public class CalculateView {
 		printMessage("Please do not enter extension for the file. (Default: .json)");
 		printMessage("Example: main_data");
 		printMessage("You can find you file in src/main/resources");
-		String fileName = scanner.nextLine();
-		return new File(RESOURCES_PREFIX + fileName + ".json");
+		try {
+			String fileName = scanner.nextLine();
+			if(containsInvalidCharacters(fileName)) {
+				throw new InvalidUserInputException();
+			}
+			return new File(RESOURCES_PREFIX + fileName + ".json");
+		} catch (Exception e) {
+			logger.info("Something went wrong with creating file.");
+			System.err.println("Invalid name of the file. Please try again.");
+			return getFile();
+		}
+	}
+
+	private boolean containsInvalidCharacters(String fileName) {
+		for (int i = 0; i < fileName.length(); ++ i) {
+			Character c = fileName.charAt(i);
+			if(!Character.isAlphabetic(c)) return false;
+		}
+		return true;
 	}
 
 }

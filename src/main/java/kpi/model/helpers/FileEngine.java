@@ -1,6 +1,5 @@
 package kpi.model.helpers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import kpi.model.entities.Flat;
@@ -15,7 +14,6 @@ import java.util.List;
 
 public class FileEngine {
 
-	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final Gson gson = new Gson();
 
 	private final Logger logger = Logger.getLogger(FileEngine.class);

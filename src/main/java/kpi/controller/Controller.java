@@ -32,8 +32,8 @@ public class Controller {
 	public void start() {
 		logger.info("App was started.");
 
-		File file = null;
-		while( (file = calculateView.getFile()) == null) {
+		File file;
+		while((file = calculateView.getFile()) == null) {
 			System.err.println("Invalid name of the file. Please try again.");
 		}
 		DataStorage dataStorage = new DataStorage(file);
@@ -57,14 +57,19 @@ public class Controller {
 							calculateView.printFlats(enteredFlats);
 							currentFlats.addAll(enteredFlats);
 						}
-						case SAVE -> service.saveAll(file, currentFlats);
+						case SAVE -> {
+							service.saveAll(file, currentFlats);
+							calculateView.printMessage(CalculateView.SAVED_SUCCESSFULLY);
+						}
 						case PRINT_FLATS -> calculateView.printFlats(currentFlats);
 						case GET_FLATS_WITH_ROOMS -> {
 							try {
 								System.out.println("Please enter number of rooms:");
 								int n = scanner.nextInt();
 								List<Flat> flatsWithNRooms = service.getFlatsWithNRooms(n);
-								calculateView.printFlats(flatsWithNRooms);
+								if(flatsWithNRooms.isEmpty()) {
+									calculateView.printMessage("We didn't find satisfied data.");
+								} else calculateView.printFlats(flatsWithNRooms);
 							} catch (Exception e) {
 								logger.info("Entered invalid values for getting flats with no. rooms.");
 								throw new InvalidUserInputException();
@@ -77,7 +82,9 @@ public class Controller {
 								System.out.println("Please enter minFloor:");
 								int minFloor = scanner.nextInt();
 								List<Flat> flatsWithSquare = service.getFlatsWithSquare(minSquare, minFloor);
-								calculateView.printFlats(flatsWithSquare);
+								if(flatsWithSquare.isEmpty()) {
+									calculateView.printMessage("We didn't find satisfied data.");
+								} else calculateView.printFlats(flatsWithSquare);
 							} catch (Exception e) {
 								logger.info("Entered invalid values for getting flats with min square and floor.");
 								throw new InvalidUserInputException();
