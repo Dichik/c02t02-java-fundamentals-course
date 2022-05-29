@@ -11,17 +11,9 @@ import java.util.Scanner;
 
 public class CalculateView {
 
-	public static final Integer ENTER_VALUES_OPTION = 1;
-	public static final Integer GENERATE_VALUES_OPTION = 2;
-	public static final Integer EXIT_OPTION = 3;
 	public static final Scanner scanner = new Scanner(System.in);
-	public static final InputUtility inputUtility = new InputUtility();
 	public static final Logger logger = LogManager.getLogger(CalculateView.class);
 
-	public static final String INPUT_DATA = "Enter 10 values by\n"
-		+ ENTER_VALUES_OPTION + " - enter values\n"
-		+ GENERATE_VALUES_OPTION + " - generate values\n"
-		+ EXIT_OPTION + " - exit\n";
 	public static final String INCORRECT_INPUT_FORMAT = "Sorry, you entered wrong value," +
 		" please try again\n";
 
@@ -30,12 +22,6 @@ public class CalculateView {
 			"\nNumber\nSquareFloor\nTotal Rooms\nType\nService Life\n";
 
 	public static final String SUCCESS_MESSAGE = "Value was created successfully\n";
-
-	// ... functions
-
-	public void printMessage(String message) {
-		System.out.println(message);
-	}
 
 	public void printFlats(List<Flat> flats) {
 		for (int i = 1; i <= flats.size(); ++ i) {
@@ -46,13 +32,11 @@ public class CalculateView {
 	}
 
 	public boolean isPerformingAnotherOperation() throws InvalidUserInputException {
-		while(true) {
-			System.out.println("Please enter Yes[Y] / No[N] in case you want to continue...");
-			String userInput = scanner.nextLine();
-			if(isUserInputValid(userInput)) {
-				return userInput.equals("yes");
-			} else throw new InvalidUserInputException();
-		}
+		System.out.println("Please enter Yes[Y] / No[N] in case you want to continue...");
+		String userInput = scanner.nextLine();
+		if (isUserInputValid(userInput)) {
+			return userInput.equals("yes");
+		} else throw new InvalidUserInputException();
 	}
 
 	public void bye() {
@@ -67,22 +51,28 @@ public class CalculateView {
 
 	public UsersChoice getUsersChoice() {
 		System.out.println("Please choose one of the following operations:");
-		System.out.println(INPUT_DATA);
+		printAvailableOptions();
 		String inputString = scanner.nextLine();
 		try {
 			int input = Integer.parseInt(inputString);
-			List<Flat> flats;
-			switch (input) {
-//				case GENERATE_VALUES_OPTION -> {
-//					return
-//				}
-//				default -> {
-//
-//				}
+			UsersChoice choice = UsersChoice.getFromIndex(input);
+			if(choice == null) {
+				throw new InvalidUserInputException();
 			}
+			return choice;
 		} catch (Exception e) {
-			System.err.println("Note: you can enter only integer. Please try again.");
+			System.err.println("Note: you can enter only valid integer. Please try again.");
 		}
 		return null;
+	}
+
+	private void printAvailableOptions() {
+		System.out.println("Enter [1] to generate new 10 flats");
+		System.out.println("Enter [2] to enter data for 'n' flats");
+		System.out.println("Enter [3] to save data");
+		System.out.println("Enter [4] to print list of flats");
+		System.out.println("Enter [5] to get flats with 'n' rooms");
+		System.out.println("Enter [6] to get flats with min square and min no. floors");
+		System.out.println("Enter [7] to exit with saving data");
 	}
 }

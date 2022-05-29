@@ -6,7 +6,10 @@ public enum UsersChoice {
 	GENERATE_VALUES(1),
 	INPUT_VALUES(2),
 	SAVE(3),
-	EXIT(4);
+	PRINT_FLATS(4),
+	GET_FLATS_WITH_ROOMS(5),
+	GET_FLATS_WITH_SQUARE(6),
+	EXIT(7);
 
 	int index = 0;
 

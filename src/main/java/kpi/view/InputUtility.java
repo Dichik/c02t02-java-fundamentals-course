@@ -1,6 +1,9 @@
 package kpi.view;
 
+import kpi.controller.Controller;
 import kpi.model.entities.Flat;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,32 +12,18 @@ import java.util.Scanner;
 
 public class InputUtility {
 
-	// rewrite it
+	private static final Scanner scanner = new Scanner(System.in);
+	private static final Integer DEFAULT_TOTAL_NUMBER_OF_FLATS = 10;
+	private static final Logger logger = LogManager.getLogger(InputUtility.class);
 
-	private final Scanner scanner;
-	private final Integer TOTAL_NUMBER_OF_FLATS = 10;
-
-	public InputUtility() {
-		scanner = new Scanner(System.in);
+	public static List<Flat> enterValues() {
+		return enterValues(DEFAULT_TOTAL_NUMBER_OF_FLATS);
 	}
 
-//	public List<Flat> inputValues() {
-//		int userChoice = scanner.nextInt();
-//		if (userChoice == CalculateView.ENTER_VALUES_OPTION) {
-//			return enterValues();
-//		} else if (userChoice == CalculateView.GENERATE_VALUES_OPTION) {
-//			return generateValues();
-//		} else if (userChoice == CalculateView.EXIT_OPTION) {
-//			return null;
-//		} else {
-//			return new ArrayList<>();
-//		}
-//	}
-
-	private List<Flat> enterValues() {
+	public static List<Flat> enterValues(int numberOfFlats) {
 		List<Flat> flats = new ArrayList<>();
 		System.out.print(CalculateView.INPUT_FIELDS_FOR_FLAT);
-		for (int i = 0; i < TOTAL_NUMBER_OF_FLATS; ++i) {
+		for (int i = 0; i < numberOfFlats; ++i) {
 			Flat flat = new Flat();
 
 			Integer number = scanner.nextInt();
@@ -55,14 +44,18 @@ public class InputUtility {
 			System.out.println(CalculateView.SUCCESS_MESSAGE);
 		}
 
-		System.out.println("[Values was entered successfully]");
+		logger.info("[Values was entered successfully]");
 		return flats;
 	}
 
-	public List<Flat> generateValues() {
+	public static List<Flat> generateValues() {
+		return generateValues(DEFAULT_TOTAL_NUMBER_OF_FLATS);
+	}
+
+	public static List<Flat> generateValues(int numberOfFlats) {
 		List<Flat> flats = new ArrayList<>();
 		Random random = new Random();
-		for (int i = 0; i < TOTAL_NUMBER_OF_FLATS; ++i) {
+		for (int i = 0; i < numberOfFlats; ++i) {
 			Flat flat = new Flat(
 				random.nextInt(100),
 				(double) random.nextInt(400) / 10.0,
@@ -74,7 +67,7 @@ public class InputUtility {
 			flats.add(flat);
 		}
 
-		System.out.println("[Values was generated successfully]");
+		logger.info("[Values was generated successfully]");
 		return flats;
 	}
 

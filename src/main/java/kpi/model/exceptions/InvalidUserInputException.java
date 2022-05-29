@@ -1,6 +1,6 @@
 package kpi.model.exceptions;
 
-public class InvalidUserInputException extends Throwable {
+public class InvalidUserInputException extends Exception {
 
 	public InvalidUserInputException() {
 		super("Invalid user input.");

@@ -2,23 +2,26 @@ package kpi.model.services;
 
 import kpi.model.entities.Flat;
 import kpi.model.storage.DataStorage;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FlatService {
 	private DataStorage dataStorage;
 
+	private final Logger logger = LogManager.getLogger(FlatService.class);
+
 	public FlatService(DataStorage dataStorage) {
 		this.dataStorage = dataStorage;
 	}
 
-	// add hashing to get flats without accessing to db
+	// TODO add hashing to get flats without accessing to db
 
 	public List<Flat> getAllFlats() {
-		return null;
+		return dataStorage.findAll();
 	}
 
 	public List<Flat> getFlatsWithNRooms(int numberOfRooms) {
@@ -37,7 +40,10 @@ public class FlatService {
 	}
 
 	public void saveAll(File file, List<Flat> flats) {
-
+		if(!flats.isEmpty()) {
+			dataStorage.save(file, flats);
+		}
+		logger.info("All flats were saved successfully.");
 	}
 
 }
