@@ -35,7 +35,7 @@ public class Controller {
 		// TODO load list of available list of items
 		//  and add view print current list of flats
 		List<Flat> currentFlats = new ArrayList<>();
-		while (true) {
+		do {
 			try {
 				boolean performAnotherOperation = calculateView.isPerformingAnotherOperation();
 
@@ -94,10 +94,14 @@ public class Controller {
 			}
 
 			if(doStop) {
-				service.saveAll(null, currentFlats);
-				break;
+				File fileToSave = calculateView.getFileForSaving();
+				if(fileToSave != null) {
+					service.saveAll(null, currentFlats);
+					logger.info("All flats were saved successfully.");
+					calculateView.printMessage(CalculateView.SAVED_SUCCESSFULLY);
+				}
 			}
-		}
+		} while (!doStop);
 
 		logger.info("App was finished successfully.");
 	}

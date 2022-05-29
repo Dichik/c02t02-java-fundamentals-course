@@ -43,7 +43,6 @@ public class FlatService {
 		if(!flats.isEmpty()) {
 			dataStorage.save(file, flats);
 		}
-		logger.info("All flats were saved successfully.");
 	}
 
 }
