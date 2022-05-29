@@ -17,7 +17,7 @@ public class CalculateView {
 
 	public static final String INCORRECT_INPUT_FORMAT = "Sorry, you entered wrong value," +
 		" please try again\n";
-	private static final String RESOURCES_PREFIX = "src/main/resources";
+	public static final String RESOURCES_PREFIX = "src/main/resources/";
 
 	public static final String INPUT_FIELDS_FOR_FLAT =
 		"\nPlease input flats data in the next format:\n" +
@@ -39,7 +39,7 @@ public class CalculateView {
 	}
 
 	public boolean isPerformingAnotherOperation() throws InvalidUserInputException {
-		System.out.println("Please enter Yes[Y] / No[N] in case you want to continue...");
+		System.out.println("Please enter Yes / No in case you want to continue...");
 		String userInput = scanner.nextLine();
 		if (isUserInputValid(userInput)) {
 			return userInput.equals("yes");
@@ -82,13 +82,13 @@ public class CalculateView {
 		printMessage("Enter [6] to get flats with min square and min no. floors");
 		printMessage("Enter [7] to exit with saving data");
 	}
-
-	public File getFileForSaving() {
-		printMessage("Type the name of the file and press enter.");
+	public File getFile() {
+		printMessage("Type the name of the file to work with and press enter.");
 		printMessage("Please do not enter extension for the file. (Default: .json)");
 		printMessage("Example: main_data");
 		printMessage("You can find you file in src/main/resources");
 		String fileName = scanner.nextLine();
 		return new File(RESOURCES_PREFIX + fileName + ".json");
 	}
+
 }

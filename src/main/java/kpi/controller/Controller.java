@@ -4,6 +4,7 @@ import kpi.model.entities.Flat;
 import kpi.model.entities.UsersChoice;
 import kpi.model.exceptions.InvalidUserInputException;
 import kpi.model.services.FlatService;
+import kpi.model.storage.DataStorage;
 import kpi.view.CalculateView;
 import kpi.view.InputUtility;
 import org.apache.log4j.LogManager;
@@ -25,16 +26,20 @@ public class Controller {
 
 	public Controller() {
 		logger.debug("Initialization in [Controller] started.");
-		// do some operation with file saving
 		calculateView = new CalculateView();
 	}
 
 	public void start() {
 		logger.info("App was started.");
 
-		// TODO load list of available list of items
-		//  and add view print current list of flats
-		List<Flat> currentFlats = new ArrayList<>();
+		File file = null;
+		while( (file = calculateView.getFile()) == null) {
+			System.err.println("Invalid name of the file. Please try again.");
+		}
+		DataStorage dataStorage = new DataStorage(file);
+		service = new FlatService(dataStorage);
+
+		List<Flat> currentFlats = new ArrayList<>(service.getAllFlats());
 		do {
 			try {
 				boolean performAnotherOperation = calculateView.isPerformingAnotherOperation();
@@ -52,17 +57,11 @@ public class Controller {
 							calculateView.printFlats(enteredFlats);
 							currentFlats.addAll(enteredFlats);
 						}
-						case SAVE -> {
-							service.saveAll(null, currentFlats);
-							currentFlats.clear();
-						}
-						case PRINT_FLATS -> {
-							List<Flat> allFlats = service.getAllFlats();
-							allFlats.addAll(currentFlats);
-							calculateView.printFlats(allFlats);
-						}
+						case SAVE -> service.saveAll(file, currentFlats);
+						case PRINT_FLATS -> calculateView.printFlats(currentFlats);
 						case GET_FLATS_WITH_ROOMS -> {
 							try {
+								System.out.println("Please enter number of rooms:");
 								int n = scanner.nextInt();
 								List<Flat> flatsWithNRooms = service.getFlatsWithNRooms(n);
 								calculateView.printFlats(flatsWithNRooms);
@@ -75,7 +74,7 @@ public class Controller {
 							try {
 								System.out.println("Please enter minSquare:");
 								double minSquare = scanner.nextDouble();
-								System.out.println("Please enter minSquare:");
+								System.out.println("Please enter minFloor:");
 								int minFloor = scanner.nextInt();
 								List<Flat> flatsWithSquare = service.getFlatsWithSquare(minSquare, minFloor);
 								calculateView.printFlats(flatsWithSquare);
@@ -94,15 +93,13 @@ public class Controller {
 			}
 
 			if(doStop) {
-				File fileToSave = calculateView.getFileForSaving();
-				if(fileToSave != null) {
-					service.saveAll(null, currentFlats);
-					logger.info("All flats were saved successfully.");
-					calculateView.printMessage(CalculateView.SAVED_SUCCESSFULLY);
-				}
+				service.saveAll(file, currentFlats);
+				logger.info("All flats were saved successfully.");
+				calculateView.printMessage(CalculateView.SAVED_SUCCESSFULLY);
 			}
 		} while (!doStop);
 
+		calculateView.bye();
 		logger.info("App was finished successfully.");
 	}
 
