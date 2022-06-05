@@ -1,37 +1,32 @@
 package kpi.model.services;
 
+import com.google.gson.JsonParseException;
 import kpi.model.entities.Flat;
 import kpi.model.storage.DataStorage;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class FlatService {
 	private DataStorage dataStorage;
 
-	private final Logger logger = LogManager.getLogger(FlatService.class);
-
 	public FlatService(DataStorage dataStorage) {
 		this.dataStorage = dataStorage;
 	}
 
-	// TODO add hashing to get flats without accessing to db
-
-	public List<Flat> getAllFlats() {
-		return dataStorage.findAll();
+	public List<Flat> getAllFlats() throws IOException, JsonParseException {
+		return dataStorage.getAllFlatsFromFile();
 	}
 
-	public List<Flat> getFlatsWithNRooms(int numberOfRooms) {
+	public List<Flat> getFlatsWithNRooms(int numberOfRooms) throws IOException, JsonParseException {
 		List<Flat> flats = getAllFlats();
 		return flats.stream()
 			.filter(flat -> flat.getTotalRooms() == numberOfRooms)
 			.collect(Collectors.toList());
 	}
 
-	public List<Flat> getFlatsWithSquare(double minSquare, int minFloor) {
+	public List<Flat> getFlatsWithSquare(double minSquare, int minFloor) throws IOException, JsonParseException {
 		List<Flat> flats = getAllFlats();
 		return flats.stream()
 			.filter(flat -> flat.getSquare() >= minSquare)
@@ -39,10 +34,8 @@ public class FlatService {
 			.collect(Collectors.toList());
 	}
 
-	public void saveAll(File file, List<Flat> flats) {
-		if(!flats.isEmpty()) {
-			dataStorage.save(file, flats);
-		}
+	public void saveAll(List<Flat> flats) throws IOException, JsonParseException {
+		dataStorage.saveAllFlatsToFile(flats);
 	}
 
 }

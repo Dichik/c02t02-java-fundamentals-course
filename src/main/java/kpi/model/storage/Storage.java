@@ -3,12 +3,13 @@ package kpi.model.storage;
 import kpi.model.entities.Flat;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public interface Storage {
 
-	List<Flat> findAll();
+	List<Flat> getAllFlatsFromFile() throws IOException;
 
-	void save(File file, List<Flat> flats);
+	void saveAllFlatsToFile(List<Flat> flats) throws IOException;
 
 }

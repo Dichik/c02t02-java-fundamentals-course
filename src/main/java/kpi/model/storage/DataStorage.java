@@ -1,37 +1,33 @@
 package kpi.model.storage;
 
+import com.google.gson.JsonParseException;
 import kpi.model.entities.Flat;
 import kpi.model.helpers.FileEngine;
-import org.json.simple.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.List;
 
 public class DataStorage implements Storage {
 
 	private final FileEngine fileEngine;
-	private File file;
+	private final File source;
 
-	public DataStorage(File file) {
-		this.file = file;
+	public DataStorage(File source) {
+		this.source = source;
 		fileEngine = new FileEngine();
 	}
 
 	@Override
-	public List<Flat> findAll() {
-		return fileEngine.parseFromJsonToFlats(file);
+	public List<Flat> getAllFlatsFromFile() throws IOException, JsonParseException {
+		return fileEngine.parseFromJsonToFlats(source);
 	}
 
 	@Override
-	public void save(File file, List<Flat> flats) {
-		try (PrintWriter out = new PrintWriter(new FileWriter(file.getPath()))) {
-			String jsonString = fileEngine.getJSONStringFrom(flats);
-			out.write(jsonString);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void saveAllFlatsToFile(List<Flat> flats) throws IOException, JsonParseException {
+		FileWriter fw = new FileWriter(source);
+		String jsonString = fileEngine.getJSONStringFrom(flats);
+		BufferedWriter writer = new BufferedWriter(fw);
+		writer.write(jsonString);
+		writer.close();
 	}
 }

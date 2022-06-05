@@ -77,14 +77,8 @@ public class Flat {
 
 	@Override
 	public String toString() {
-		return "entity.Flat{" +
-			"number=" + number +
-			", square=" + square +
-			", floor=" + floor +
-			", totalRooms=" + totalRooms +
-			", type='" + type + '\'' +
-			", serviceLife=" + serviceLife +
-			'}';
+		return String.format("number=%10d | square=%10f | floor=%10d | totalRooms=%5d | type='%10s' | serviceLife=%5d",
+			number, square, floor, totalRooms, type, serviceLife);
 	}
 
 }

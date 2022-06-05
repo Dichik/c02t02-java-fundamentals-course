@@ -1,1 +1,242 @@
-[{"number":90,"square":31.6,"floor":9,"totalRooms":0,"type":"type4","serviceLife":3},{"number":19,"square":4.4,"floor":9,"totalRooms":0,"type":"type4","serviceLife":2},{"number":78,"square":2.0,"floor":8,"totalRooms":4,"type":"type3","serviceLife":2},{"number":3,"square":6.3,"floor":5,"totalRooms":0,"type":"type4","serviceLife":1},{"number":3,"square":6.0,"floor":1,"totalRooms":2,"type":"type3","serviceLife":2},{"number":85,"square":3.0,"floor":2,"totalRooms":1,"type":"type3","serviceLife":2},{"number":39,"square":31.5,"floor":1,"totalRooms":4,"type":"type3","serviceLife":1},{"number":39,"square":22.5,"floor":0,"totalRooms":2,"type":"type0","serviceLife":1},{"number":47,"square":36.2,"floor":9,"totalRooms":3,"type":"type2","serviceLife":0},{"number":8,"square":2.4,"floor":8,"totalRooms":1,"type":"type0","serviceLife":2},{"number":10,"square":33.7,"floor":9,"totalRooms":2,"type":"type2","serviceLife":4},{"number":69,"square":34.4,"floor":0,"totalRooms":1,"type":"type3","serviceLife":0},{"number":65,"square":10.2,"floor":0,"totalRooms":2,"type":"type4","serviceLife":4},{"number":83,"square":14.0,"floor":2,"totalRooms":1,"type":"type2","serviceLife":4},{"number":59,"square":31.2,"floor":9,"totalRooms":1,"type":"type2","serviceLife":1},{"number":78,"square":11.3,"floor":5,"totalRooms":4,"type":"type2","serviceLife":0},{"number":2,"square":10.8,"floor":3,"totalRooms":4,"type":"type0","serviceLife":2},{"number":40,"square":8.8,"floor":5,"totalRooms":2,"type":"type3","serviceLife":0},{"number":16,"square":35.8,"floor":2,"totalRooms":3,"type":"type1","serviceLife":3},{"number":73,"square":8.2,"floor":4,"totalRooms":2,"type":"type3","serviceLife":3},{"number":30,"square":12.4,"floor":8,"totalRooms":1,"type":"type2","serviceLife":2},{"number":67,"square":19.4,"floor":5,"totalRooms":3,"type":"type3","serviceLife":0},{"number":74,"square":17.5,"floor":3,"totalRooms":2,"type":"type2","serviceLife":0},{"number":9,"square":1.9,"floor":6,"totalRooms":0,"type":"type0","serviceLife":1},{"number":49,"square":30.1,"floor":6,"totalRooms":0,"type":"type4","serviceLife":3},{"number":59,"square":2.4,"floor":9,"totalRooms":3,"type":"type4","serviceLife":0},{"number":21,"square":24.4,"floor":3,"totalRooms":3,"type":"type2","serviceLife":3},{"number":51,"square":3.6,"floor":6,"totalRooms":1,"type":"type2","serviceLife":4},{"number":18,"square":6.9,"floor":9,"totalRooms":0,"type":"type1","serviceLife":0},{"number":63,"square":34.4,"floor":5,"totalRooms":0,"type":"type3","serviceLife":3}]
+[
+  {
+    "number": 36,
+    "square": 8.4,
+    "floor": 7,
+    "totalRooms": 2,
+    "type": "type2",
+    "serviceLife": 1
+  },
+  {
+    "number": 52,
+    "square": 39.1,
+    "floor": 9,
+    "totalRooms": 4,
+    "type": "type0",
+    "serviceLife": 0
+  },
+  {
+    "number": 68,
+    "square": 26.9,
+    "floor": 2,
+    "totalRooms": 1,
+    "type": "type2",
+    "serviceLife": 2
+  },
+  {
+    "number": 90,
+    "square": 32.3,
+    "floor": 4,
+    "totalRooms": 3,
+    "type": "type1",
+    "serviceLife": 3
+  },
+  {
+    "number": 32,
+    "square": 6.3,
+    "floor": 2,
+    "totalRooms": 0,
+    "type": "type1",
+    "serviceLife": 3
+  },
+  {
+    "number": 81,
+    "square": 14.3,
+    "floor": 7,
+    "totalRooms": 4,
+    "type": "type2",
+    "serviceLife": 1
+  },
+  {
+    "number": 87,
+    "square": 9.4,
+    "floor": 5,
+    "totalRooms": 4,
+    "type": "type3",
+    "serviceLife": 2
+  },
+  {
+    "number": 75,
+    "square": 24.6,
+    "floor": 9,
+    "totalRooms": 3,
+    "type": "type3",
+    "serviceLife": 4
+  },
+  {
+    "number": 26,
+    "square": 4.0,
+    "floor": 6,
+    "totalRooms": 2,
+    "type": "type3",
+    "serviceLife": 0
+  },
+  {
+    "number": 0,
+    "square": 34.7,
+    "floor": 2,
+    "totalRooms": 1,
+    "type": "type4",
+    "serviceLife": 2
+  },
+  {
+    "number": 85,
+    "square": 28.3,
+    "floor": 1,
+    "totalRooms": 2,
+    "type": "type3",
+    "serviceLife": 4
+  },
+  {
+    "number": 7,
+    "square": 25.8,
+    "floor": 2,
+    "totalRooms": 4,
+    "type": "type4",
+    "serviceLife": 3
+  },
+  {
+    "number": 20,
+    "square": 11.7,
+    "floor": 5,
+    "totalRooms": 4,
+    "type": "type1",
+    "serviceLife": 3
+  },
+  {
+    "number": 87,
+    "square": 16.1,
+    "floor": 7,
+    "totalRooms": 3,
+    "type": "type1",
+    "serviceLife": 3
+  },
+  {
+    "number": 38,
+    "square": 8.4,
+    "floor": 9,
+    "totalRooms": 0,
+    "type": "type4",
+    "serviceLife": 2
+  },
+  {
+    "number": 69,
+    "square": 38.9,
+    "floor": 1,
+    "totalRooms": 4,
+    "type": "type0",
+    "serviceLife": 1
+  },
+  {
+    "number": 49,
+    "square": 22.8,
+    "floor": 4,
+    "totalRooms": 4,
+    "type": "type3",
+    "serviceLife": 0
+  },
+  {
+    "number": 25,
+    "square": 32.0,
+    "floor": 2,
+    "totalRooms": 4,
+    "type": "type1",
+    "serviceLife": 2
+  },
+  {
+    "number": 8,
+    "square": 24.7,
+    "floor": 6,
+    "totalRooms": 1,
+    "type": "type3",
+    "serviceLife": 2
+  },
+  {
+    "number": 39,
+    "square": 21.3,
+    "floor": 4,
+    "totalRooms": 3,
+    "type": "type0",
+    "serviceLife": 2
+  },
+  {
+    "number": 51,
+    "square": 7.1,
+    "floor": 2,
+    "totalRooms": 1,
+    "type": "type4",
+    "serviceLife": 0
+  },
+  {
+    "number": 7,
+    "square": 39.9,
+    "floor": 1,
+    "totalRooms": 1,
+    "type": "type4",
+    "serviceLife": 3
+  },
+  {
+    "number": 51,
+    "square": 25.0,
+    "floor": 1,
+    "totalRooms": 1,
+    "type": "type3",
+    "serviceLife": 1
+  },
+  {
+    "number": 74,
+    "square": 37.8,
+    "floor": 3,
+    "totalRooms": 2,
+    "type": "type4",
+    "serviceLife": 1
+  },
+  {
+    "number": 95,
+    "square": 33.3,
+    "floor": 3,
+    "totalRooms": 3,
+    "type": "type0",
+    "serviceLife": 0
+  },
+  {
+    "number": 75,
+    "square": 29.2,
+    "floor": 0,
+    "totalRooms": 1,
+    "type": "type3",
+    "serviceLife": 3
+  },
+  {
+    "number": 59,
+    "square": 7.7,
+    "floor": 0,
+    "totalRooms": 3,
+    "type": "type2",
+    "serviceLife": 4
+  },
+  {
+    "number": 6,
+    "square": 1.7,
+    "floor": 7,
+    "totalRooms": 2,
+    "type": "type0",
+    "serviceLife": 4
+  },
+  {
+    "number": 71,
+    "square": 5.2,
+    "floor": 9,
+    "totalRooms": 3,
+    "type": "type1",
+    "serviceLife": 3
+  },
+  {
+    "number": 37,
+    "square": 9.3,
+    "floor": 3,
+    "totalRooms": 0,
+    "type": "type4",
+    "serviceLife": 2
+  }
+]

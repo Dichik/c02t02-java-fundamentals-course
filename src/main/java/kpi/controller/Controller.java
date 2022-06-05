@@ -1,113 +1,111 @@
 package kpi.controller;
 
+import com.google.gson.JsonParseException;
 import kpi.model.entities.Flat;
-import kpi.model.entities.UsersChoice;
 import kpi.model.exceptions.InvalidUserInputException;
+import kpi.model.helpers.UsersChoice;
 import kpi.model.services.FlatService;
 import kpi.model.storage.DataStorage;
-import kpi.view.CalculateView;
-import kpi.view.InputUtility;
+import kpi.view.FlatView;
+import kpi.model.helpers.InputUtility;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Properties;
 
 public class Controller {
-
-	private FlatService service;
-	private final CalculateView calculateView;
-	private Boolean doStop = false;
-
-	private final Scanner scanner = new Scanner(System.in);
 	private static final Logger logger = LogManager.getLogger(Controller.class);
+
+	private final FlatService service;
+	private final FlatView flatView;
 
 	public Controller() {
 		logger.debug("Initialization in [Controller] started.");
-		calculateView = new CalculateView();
+
+		this.flatView = new FlatView();
+
+		File file = null;
+		try {
+			file = loadFileFromResources();
+		} catch (IOException e) {
+			flatView.printMessage(FlatView.FAILED_TO_LOAD_DATA);
+			logger.error("Couldn't load data from the file...");
+			System.exit(0);
+		}
+		this.service = new FlatService(new DataStorage(file));
 	}
 
 	public void start() {
-		logger.info("App was started.");
+		logger.debug("App was started.");
 
-		File file;
-		while((file = calculateView.getFile()) == null) {
-			System.err.println("Invalid name of the file. Please try again.");
+		try {
+			performOperations();
+
+			flatView.bye();
+			logger.debug("App was finished successfully.");
+		} catch (JsonParseException e) {
+			flatView.printMessage(FlatView.PROBLEM_WITH_PARSING);
+			logger.error("Some troubles with parsing data.");
+		} catch (IOException e) {
+			flatView.printMessage(FlatView.PROBLEM_WITH_STORAGE);
+			logger.error("Some troubles with storage.");
 		}
-		DataStorage dataStorage = new DataStorage(file);
-		service = new FlatService(dataStorage);
 
-		List<Flat> currentFlats = new ArrayList<>(service.getAllFlats());
+		logger.error("App was not finished successfully.");
+	}
+
+	private void performOperations() throws IOException, JsonParseException {
+		flatView.printMessage(FlatView.CURRENT_LIST_OF_FLATS);
+		flatView.printFlats(service.getAllFlats());
+
+		UsersChoice choice = null;
+		List<Flat> currentFlats = new ArrayList<>();
 		do {
 			try {
-				boolean performAnotherOperation = calculateView.isPerformingAnotherOperation();
-
-				if(!(doStop = !performAnotherOperation)) {
-					UsersChoice choice = calculateView.getUsersChoice();
-					switch (choice) {
-						case GENERATE_VALUES -> {
-							List<Flat> generatedFlats = InputUtility.generateValues();
-							calculateView.printFlats(generatedFlats);
-							currentFlats.addAll(generatedFlats);
-						}
-						case INPUT_VALUES -> {
-							List<Flat> enteredFlats = InputUtility.enterValues();
-							calculateView.printFlats(enteredFlats);
-							currentFlats.addAll(enteredFlats);
-						}
-						case SAVE -> {
-							service.saveAll(file, currentFlats);
-							calculateView.printMessage(CalculateView.SAVED_SUCCESSFULLY);
-						}
-						case PRINT_FLATS -> calculateView.printFlats(currentFlats);
-						case GET_FLATS_WITH_ROOMS -> {
-							try {
-								System.out.println("Please enter number of rooms:");
-								int n = scanner.nextInt();
-								List<Flat> flatsWithNRooms = service.getFlatsWithNRooms(n);
-								if(flatsWithNRooms.isEmpty()) {
-									calculateView.printMessage("We didn't find satisfied data.");
-								} else calculateView.printFlats(flatsWithNRooms);
-							} catch (Exception e) {
-								logger.info("Entered invalid values for getting flats with no. rooms.");
-								throw new InvalidUserInputException();
-							}
-						}
-						case GET_FLATS_WITH_SQUARE -> {
-							try {
-								System.out.println("Please enter minSquare:");
-								double minSquare = scanner.nextDouble();
-								System.out.println("Please enter minFloor:");
-								int minFloor = scanner.nextInt();
-								List<Flat> flatsWithSquare = service.getFlatsWithSquare(minSquare, minFloor);
-								if(flatsWithSquare.isEmpty()) {
-									calculateView.printMessage("We didn't find satisfied data.");
-								} else calculateView.printFlats(flatsWithSquare);
-							} catch (Exception e) {
-								logger.info("Entered invalid values for getting flats with min square and floor.");
-								throw new InvalidUserInputException();
-							}
-						}
-						case EXIT -> {
-							this.doStop = true;
-						}
+				choice = flatView.getUsersChoice();
+			} catch (InvalidUserInputException e) {
+				flatView.printMessage("Note: you can enter only valid integer. Please try again.");
+				continue;
+			}
+			switch (choice) {
+				case GENERATE_VALUES -> currentFlats = InputUtility.generateValues();
+				case PRINT_FLATS -> flatView.printFlats(service.getAllFlats());
+				case GET_FLATS_WITH_ROOMS -> {
+					int numberOfRooms = flatView.getNumberOfRooms();
+					currentFlats = service.getFlatsWithNRooms(numberOfRooms);
+				}
+				case GET_FLATS_WITH_SQUARE -> {
+					double minSquare = flatView.getMinSquare();
+					int minFloor = flatView.getMinFloor();
+					currentFlats = service.getFlatsWithSquare(minSquare, minFloor);
+				}
+				default -> {
+					if(!currentFlats.isEmpty()) {
+						currentFlats.addAll(service.getAllFlats());
+						service.saveAll(currentFlats);
+						flatView.printMessage(FlatView.SAVED_SUCCESSFULLY);
+						currentFlats.clear();
 					}
 				}
-			} catch (InvalidUserInputException e) {
-				System.err.println("You input is invalid.");
 			}
-
-			if(doStop) {
-				service.saveAll(file, currentFlats);
-				logger.info("All flats were saved successfully.");
-				calculateView.printMessage(CalculateView.SAVED_SUCCESSFULLY);
+			if(currentFlats.isEmpty()) {
+				flatView.printMessage(FlatView.EMPTY_LIST);
+			} else {
+				flatView.printFlats(currentFlats);
 			}
-		} while (!doStop);
+		} while (choice != UsersChoice.EXIT);
+	}
 
-		calculateView.bye();
-		logger.info("App was finished successfully.");
+	private File loadFileFromResources() throws IOException {
+		Properties properties = new Properties();
+		FileReader fileReader = new FileReader("src/main/resources/application.properties");
+		properties.load(fileReader);
+		return new File(properties.getProperty("main-db"));
 	}
 
 }

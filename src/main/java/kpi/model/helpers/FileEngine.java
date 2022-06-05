@@ -1,9 +1,9 @@
 package kpi.model.helpers;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 import kpi.model.entities.Flat;
-import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,19 +16,12 @@ public class FileEngine {
 
 	private final Gson gson = new Gson();
 
-	private final Logger logger = Logger.getLogger(FileEngine.class);
-
-	public List<Flat> parseFromJsonToFlats(File file) {
-		try {
-			Reader reader = Files.newBufferedReader(Paths.get(file.getPath()));
-			return gson.fromJson(reader, new TypeToken<List<Flat>>() {}.getType());
-		} catch (IOException e) {
-			logger.error(String.format("Error to parse data from %s.json file.", file.getName()));
-		}
-		return null;
+	public List<Flat> parseFromJsonToFlats(File file) throws IOException, JsonParseException {
+		Reader reader = Files.newBufferedReader(Paths.get(file.getPath()));
+		return gson.fromJson(reader, new TypeToken<List<Flat>>() {}.getType());
 	}
 
-	public String getJSONStringFrom(List<Flat> flats) {
+	public String getJSONStringFrom(List<Flat> flats) throws JsonParseException {
 		return gson.toJson(flats);
 	}
 }
